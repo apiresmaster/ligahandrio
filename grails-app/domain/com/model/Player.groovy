@@ -1,9 +1,11 @@
-package com.domain
+package com.model
+
+import java.time.LocalDate
 
 class Player {
     String name
     String nickname
-    Calendar birthDate
+    LocalDate birthDate
     String cpf
 
     static belongsTo = [team: Team]

@@ -1,4 +1,4 @@
-package com.domain
+package com.model
 
 import grails.testing.gorm.DomainUnitTest
 import spock.lang.Specification
