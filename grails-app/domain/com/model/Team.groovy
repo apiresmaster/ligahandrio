@@ -1,6 +1,7 @@
 package com.model
 
 class Team {
+    private def data = new Date()
     String name
     String nickname
     List<Player> players
@@ -11,7 +12,7 @@ class Team {
         name blank: false , maxSize: 128 , unique: true
         players maxSize: 30, validator: {pl, obj, errors ->
             pl.find{ p ->
-                if((2018 - p.birthDate.getYear().toInteger()) <= obj.category.limitAge)
+                if((obj.data.format("YYYY").toInteger() - p.birthDate.getYear().toInteger()) <= obj.category.limitAge)
                     errors.rejectValue('players', 'noMatch')
             }
         }
