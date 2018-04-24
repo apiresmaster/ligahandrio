@@ -33,19 +33,19 @@ class MatchSpec extends Specification implements DomainUnitTest<Match> {
 
     void "Criar rodada com equipes 35 mais masculino"() {
 
-        for (int i = 0; i < 30; i++) {
-            timeOne35Mais.addToPlayers(new Player(name: "Alexandre Pires"
+        for (int i = 0; i < 10; i++) {
+            timeOne35Mais.addToPlayers(new Player(name: "Jogador Time1 ${i}"
                     ,nickname: "Jogador ${i}"
-                    ,cpf: "09233356760"
+                    ,cpf: "11111111111"
                     ,birthDate: dtNascimento
             ))
         }
         timeOne35Mais.save()
 
-        for (int i = 0; i < 30; i++) {
-            timeSecond35Mais.addToPlayers(new Player(name: "Alexandre Pires"
-                    ,nickname: "Jogador ${i}"
-                    ,cpf: "09233356760"
+        for (int i = 0; i < 10; i++) {
+            timeSecond35Mais.addToPlayers(new Player(name: "Jogador ${i}"
+                    ,nickname: "Jogador Time2 ${i}"
+                    ,cpf: "11111111111"
                     ,birthDate: dtNascimento
             ))
         }
@@ -55,9 +55,28 @@ class MatchSpec extends Specification implements DomainUnitTest<Match> {
         def rodadaAbril = new Match(roundDate: dtRodada, description: "Ginásio do CEFED")
 
         rodadaAbril.teamMatch = [new TeamMatch(teamOne: timeOne35Mais, teamSecond: timeSecond35Mais)]
+        rodadaAbril.save() != null
+        //votação no jogador 1
+        def votoJogador1 = rodadaAbril.teamMatch[0].teamOne.players[0]
+        def votacao1 = new CountVotes(votoJogador1)
+        votacao1.vote()
+        votacao1.vote()
+        votacao1.vote()
+        rodadaAbril.teamMatch[0].addToVotes(votacao1)
 
+        //votação no jogador 2
+        def votoJogador2 = rodadaAbril.teamMatch[0].teamOne.players[1]
+        def votacao2 = new CountVotes(votoJogador2)
+        votacao2.vote()
+        votacao2.vote()
+        votacao2.vote()
+        //votacao2.vote()
+        rodadaAbril.teamMatch[0].addToVotes(votacao2)
+        rodadaAbril.save()
 
+        def result = rodadaAbril.teamMatch[0].finishVotes()
+        println(result)
         expect:"fix me"
-            rodadaAbril.save() != null
+
     }
 }
